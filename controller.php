@@ -28,7 +28,7 @@ if ($usr!= null) {
             
         default:
             $totalVideo=10;
-            $refreshtime=180000;
+            $refreshtime=60000;
             break;
     }
     
@@ -62,9 +62,12 @@ if ($usr!= null) {
         
         // 播放量、视频标题、bv、aid
         $totalPlay[$i] =$videoList->data->list->vlist[$i]->play; 
-        $title[$i] =$videoList->data->list->vlist[$i]->title; 
+        $title[$i] =$videoList->data->list->vlist[$i]->title;
+        $time[$i] =date($videoList->data->list->vlist[$i]->created);
+        $picurl[$i] =$videoList->data->list->vlist[$i]->pic;
         $bvid[$i] =$videoList->data->list->vlist[$i]->bvid; 
-        $aid[$i] =$videoList->data->list->vlist[$i]->aid; 
+        $aid[$i] =$videoList->data->list->vlist[$i]->aid;
+         
     
         $contentsBasicData = CurlGetData('https://api.bilibili.com/x/web-interface/view?aid='.$aid[$i]); 
         $contentsGetCid = CurlGetData('http://api.bilibili.com/x/player/pagelist?bvid='.$bvid[$i]); 
@@ -85,14 +88,34 @@ if ($usr!= null) {
         $dataFav[$i] =$videoBasicData->data->stat->favorite;
         
         // 三连数据展示格式
-        $like[$i]=round(floatval($dataLike[$i]/10000),2)."w";
-        $coin[$i]=round(floatval($dataCoin[$i]/10000),2)."w";
-        $fav[$i]=round(floatval($dataFav[$i]/10000),2)."w";
+        if ($dataLike[$i] > 10000){
+            $like[$i]=round(floatval($dataLike[$i]/10000),2)."w";
+        }else{
+            $like[$i]=round(floatval($dataLike[$i]),2);
+        }
+        if ($dataCoin[$i] > 10000){
+            $coin[$i]=round(floatval($dataCoin[$i]/10000),2)."w";
+        }else{
+            $coin[$i]=round(floatval($dataCoin[$i]),2);
+        }
+        if ($dataFav[$i] > 10000){
+            $fav[$i]=round(floatval($dataFav[$i]/10000),2)."w";
+        }else{
+            $fav[$i]=round(floatval($dataFav[$i]),2);
+        }
+        
         
         // 三连率
-        $likeRatio[$i]=round(floatval($dataLike[$i]/$totalPlay[$i]),4)*100 ."%";
-        $coinRatio[$i]=round(floatval($dataCoin[$i]/$totalPlay[$i]),4)*100 ."%";
-        $favRatio[$i]=round(floatval($dataFav[$i]/$totalPlay[$i]),4)*100 ."%";
+        if ($totalPlay[$i] !=0){
+            $likeRatio[$i]=round(floatval($dataLike[$i]/$totalPlay[$i]),4)*100 ."%";
+            $coinRatio[$i]=round(floatval($dataCoin[$i]/$totalPlay[$i]),4)*100 ."%";
+            $favRatio[$i]=round(floatval($dataFav[$i]/$totalPlay[$i]),4)*100 ."%";
+        }else{
+            $likeRatio[$i]="0%";
+            $coinRatio[$i]="0%";
+            $favRatio[$i]="0%";
+        }
+
         
         
         // 上热门判断
