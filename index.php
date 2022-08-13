@@ -7,7 +7,6 @@ require('controller.php');
 // 禁止未授权的访问
     if(!$usr){
      print("What?!<br>无用户信息<br>请检查是否带全参数");
-     print("<br>usr:".$usr);
      return http_response_code(404);
     }
 
@@ -27,15 +26,18 @@ require('controller.php');
 		<!--自动刷新-->
 		<script>
 	        setTimeout('refresh()','<?php echo $refreshtime?>'); 
-        function refresh()
-        { 
-            window.location.reload();
+            function refresh(){ 
+                window.location.reload();
+            }
+        if ('serviceWorker' in navigator) {
+            try {
+                navigator.serviceWorker.register('sw.js');
+                console.log('SW registered');
+            } catch (error) {
+                console.log('SW reg failed');
+            }
         }
-        
 	    </script>
-
-        
-
 	</head>
 	<body>
 	   
@@ -52,7 +54,7 @@ require('controller.php');
             
         </div>
         
-        <?php for($vlist=$num;$vlist<$totalVideo+$num;$vlist++){?>
+        <?php for($vlist=$num;$vlist<$vnum;$vlist++){?>
         <hr>
         <div class="dataList">
             <p><a ><?php echo $dataHotGate[$vlist] ?></a><a style="vertical-align:middle;"><?php echo $title[$vlist] ?></a></p>
@@ -80,25 +82,25 @@ require('controller.php');
         </div> 
         <?php }?>
          <script>
-         page_url = "<?php $vnum=$totalVideo+$num;echo "/?usr=".$usr."&num=".$vnum ;?>";
+         page_url = "<?php echo "/?usr=".$usr."&num=".$vnum ;?>";
             function nextPage(){
+                document.getElementById("next").innerText="Wait...ヾ(•ω•`)o"
                 window.open(page_url,"_self");
             }
          </script>
         <div style="text-align:center;">
-         <button type="button" id="next" onclick="nextPage()">Next
+            
          <?php 
-            if ($vnum!=$totalVideo){
+            if ($vnum!=$totalVideo&&false==$allwatch){
                 $page=$vnum/3;
-                echo "(第".$page."页)";
+                echo "<button type='button' id='next' onclick='nextPage()'>Next(第".$page."页)";
+            }elseif ($vnum=$totalVideo&&false==$allwatch){
+                echo "<button type='button' id='next' onclick='nextPage()'>Next(第1页)";
             }else{
-                echo "(第1页)";
+                echo "<button type='button' onclick='window.history.back()' id='next'>到底了( *︾▽︾)"; 
             }
             ?>
          </button>
         </div>
-
-       
 	</body>
-	
 	</html>

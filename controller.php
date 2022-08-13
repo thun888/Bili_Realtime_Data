@@ -59,18 +59,26 @@ if ($usr!= null) {
     if (!$num){
         $num = 0;
     }
-    
+    $videonummax = count($videoList->data->list->vlist);
+    $vnum=$totalVideo+$num;
+    if($vnum>$videonummax){
+        $vnum = $videonummax;
+        $allwatch = true;
+    }else{
+        $allwatch = false;
+    }
     // 获取设定的$totalVideo数量的视频数据
-    for ($i=$num;$i<$totalVideo+$num;$i++){
+    for ($i=$num;$i<$vnum;$i++){
         
-        
+        //echo $vnum;
         // 播放量、视频标题、bv、aid
         $totalPlay[$i] =$videoList->data->list->vlist[$i]->play; 
         $title[$i] =$videoList->data->list->vlist[$i]->title;
         $time[$i] =date("Y-m-d H:i",$videoList->data->list->vlist[$i]->created);
-        //$picurl[$i] =$videoList->data->list->vlist[$i]->pic;
+        $picurl[$i] =$videoList->data->list->vlist[$i]->pic;
         $bvid[$i] =$videoList->data->list->vlist[$i]->bvid; 
         $aid[$i] =$videoList->data->list->vlist[$i]->aid;
+        
          
     
         $contentsBasicData = CurlGetData('https://api.bilibili.com/x/web-interface/view?aid='.$aid[$i]); 
