@@ -52,10 +52,11 @@ require('controller.php');
             
         </div>
         
-        <?php for($vlist=0;$vlist<$totalVideo;$vlist++){?>
+        <?php for($vlist=$num;$vlist<$totalVideo+$num;$vlist++){?>
         <hr>
         <div class="dataList">
             <p><a ><?php echo $dataHotGate[$vlist] ?></a><a style="vertical-align:middle;"><?php echo $title[$vlist] ?></a></p>
+            <p style="color:#666666"><a style="vertical-align:middle;"><?php echo $time[$vlist] ?></a></p>
             <p style="text-align:center;margin:-1% 1%">播放：<a class="play">
                 <?php
                 if ($totalPlay[$vlist] > 10000){
@@ -77,10 +78,26 @@ require('controller.php');
             &nbsp; 币率: <a class="triCombo"><?php echo $coinRatio[$vlist] ?></a>
             &nbsp; 收率: <a class="triCombo"><?php echo $favRatio[$vlist] ?></a><br></p>
         </div> 
-        
         <?php }?>
-        
-        
+         <script>
+         page_url = "<?php $vnum=$totalVideo+$num;echo "/?usr=".$usr."&num=".$vnum ;?>";
+            function nextPage(){
+                window.open(page_url,"_self");
+            }
+         </script>
+        <div style="text-align:center;">
+         <button type="button" id="next" onclick="nextPage()">Next
+         <?php 
+            if ($vnum!=$totalVideo){
+                $page=$vnum/3;
+                echo "(第".$page."页)";
+            }else{
+                echo "(第1页)";
+            }
+            ?>
+         </button>
+        </div>
+
        
 	</body>
 	

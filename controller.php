@@ -2,6 +2,7 @@
 
 // 获取用户信息
 @$usr = $_GET["usr"];
+@$num = $_GET["num"];
 
 
 // 连接数据库
@@ -21,13 +22,13 @@ while($row = mysqli_fetch_assoc($result)) {
     // 根据不同用户，可分别设定展示视频数量与自动刷新时间（毫秒）
 if ($usr!= null) {
     switch ($usr) {
-        case 'bishi':
+        case 'nick':
             $totalVideo=3;
             $refreshtime=20000;
             break;
             
         default:
-            $totalVideo=10;
+            $totalVideo=3;
             $refreshtime=60000;
             break;
     }
@@ -46,25 +47,28 @@ if ($usr!= null) {
     
     
     // up主昵称
-    $contentsNick = CurlGetData('https://api.bilibili.com/x/space/acc/info?mid='.$uid);
-    $userNick = json_decode($contentsNick);
-    $nick =$userNick->data->name; 
+    //$contentsNick = CurlGetData('https://api.bilibili.com/x/space/acc/info?mid='.$uid);
+    //$userNick = json_decode($contentsNick);
+    //$nick =$userNick->data->name; 
+    $nick = $usr;
     
     
     // 视频列表
     $contentsNewVideo = CurlGetData('https://api.bilibili.com/x/space/arc/search?mid='.$uid); 
     $videoList = json_decode($contentsNewVideo); 
-
+    if (!$num){
+        $num = 0;
+    }
     
     // 获取设定的$totalVideo数量的视频数据
-    for ($i=0;$i<$totalVideo;$i++){
+    for ($i=$num;$i<$totalVideo+$num;$i++){
         
         
         // 播放量、视频标题、bv、aid
         $totalPlay[$i] =$videoList->data->list->vlist[$i]->play; 
         $title[$i] =$videoList->data->list->vlist[$i]->title;
-        $time[$i] =date($videoList->data->list->vlist[$i]->created);
-        $picurl[$i] =$videoList->data->list->vlist[$i]->pic;
+        $time[$i] =date("Y-m-d H:i",$videoList->data->list->vlist[$i]->created);
+        //$picurl[$i] =$videoList->data->list->vlist[$i]->pic;
         $bvid[$i] =$videoList->data->list->vlist[$i]->bvid; 
         $aid[$i] =$videoList->data->list->vlist[$i]->aid;
          
