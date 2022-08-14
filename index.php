@@ -83,7 +83,7 @@ require('controller.php');
         <?php }?>
          <script>
          next_url = "<?php echo "/?usr=".$usr."&num=".$vnum ;?>";
-         up_url = "<?php echo "/?usr=".$usr."&num=".$vnum-$totalVideo*2 ;?>";
+         up_url = "<?php $upnum= $vnum-$totalVideo*2;echo "/?usr=".$usr."&num=".$upnum;?>";
             function nextPage(){
                 document.getElementById("next").innerText="Wait...ヾ(•ω•`)o"
                 window.open(next_url,"_self");
