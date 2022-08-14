@@ -82,25 +82,36 @@ require('controller.php');
         </div> 
         <?php }?>
          <script>
-         page_url = "<?php echo "/?usr=".$usr."&num=".$vnum ;?>";
+         next_url = "<?php echo "/?usr=".$usr."&num=".$vnum ;?>";
+         up_url = "<?php echo "/?usr=".$usr."&num=".$vnum-$totalVideo*2 ;?>";
             function nextPage(){
                 document.getElementById("next").innerText="Wait...ヾ(•ω•`)o"
-                window.open(page_url,"_self");
+                window.open(next_url,"_self");
+            }
+            function upPage(){
+                document.getElementById("up").innerText="Wait...ヾ(•ω•`)o"
+                window.open(up_url,"_self");
             }
          </script>
         <div style="text-align:center;">
             
          <?php 
             if ($vnum!=$totalVideo&&false==$allwatch){
+                $page=$vnum/3-1;
+                echo "<button type='button' id='up' class='button' onclick='upPage()'>上一页(第".$page."页)</button>";
+            }
+            if ($vnum!=$totalVideo&&false==$allwatch){
                 $page=$vnum/3;
-                echo "<button type='button' id='next' onclick='nextPage()'>Next(第".$page."页)";
+                echo "<button type='button' id='next' class='button' onclick='nextPage()'>下一页(第".$page."页)</button>";
             }elseif ($vnum=$totalVideo&&false==$allwatch){
-                echo "<button type='button' id='next' onclick='nextPage()'>Next(第1页)";
+                echo "<button type='button' id='next' class='button' onclick='nextPage()'>下一页(第1页)</button>";
             }else{
-                echo "<button type='button' onclick='window.history.back()' id='next'>到底了( *︾▽︾)"; 
+                echo "<button type='button' class='button' onclick='window.history.back()' id='next'>到底了( *︾▽︾)</button>"; 
             }
             ?>
-         </button>
         </div>
+
+       
 	</body>
+	
 	</html>

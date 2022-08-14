@@ -78,7 +78,7 @@
 		padding: 3px 8px;
 		
 	}
-	#next {
+	.button {
 		background-color: #ff4684; /* Green */
 		border: none;
 		color: white;

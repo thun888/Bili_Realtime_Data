@@ -79,7 +79,7 @@
 		padding: 3px 8px;
 		
 	}
-	#next {
+	.button {
 		background-color: #ff4684; /* Green */
 		border: none;
 		color: white;
@@ -88,4 +88,5 @@
 		display: inline-block;
 		font-size: 16px;
 		border-radius: 4px;
+		margin-left: 20px;
 	}

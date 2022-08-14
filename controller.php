@@ -47,10 +47,10 @@ if ($usr!= null) {
     
     
     // up主昵称
-    //$contentsNick = CurlGetData('https://api.bilibili.com/x/space/acc/info?mid='.$uid);
-    //$userNick = json_decode($contentsNick);
-    //$nick =$userNick->data->name; 
-    $nick = $usr;
+    $contentsNick = CurlGetData('https://api.bilibili.com/x/space/acc/info?mid='.$uid);
+    $userNick = json_decode($contentsNick);
+    $nick =$userNick->data->name; 
+    //$nick = $usr;
     
     
     // 视频列表
